@@ -1,0 +1,25 @@
+{
+  "name": "cml-adapter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "supervisor index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rudrasur/cml-adapter.git"
+  },
+  "author": "Surendhar Rudra",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rudrasur/cml-adapter/issues"
+  },
+  "homepage": "https://github.com/rudrasur/cml-adapter#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "node-html-parser": "^1.1.16",
+    "supervisor": "^0.12.0"
+  }
+}
