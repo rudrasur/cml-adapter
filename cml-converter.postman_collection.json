@@ -1,0 +1,29 @@
+{
+	"info": {
+		"_postman_id": "e652d4ab-23f6-47da-8f1b-00731edeb506",
+		"name": "cml-converter",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:4000/parse-data",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/html",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<h1>Header 1 Demo</h1>\n\n<p>This Paragraph test</p>\n\n<h2>Heading 2 Test</h2>\n\n<a href=\"https://github.com/domchristie/turndown\">Hyper link Test</a>\n\n\n<select>\n  <option selected=\"selected\">Option 1</option>\n  <option>Option 2</option>\n</select>\n  \n\n<ul>\n  <li>List item 1</li>\n  <li>List item 2</li>\n</ul>"
+				},
+				"url": "http://localhost:4000/parse-data"
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
