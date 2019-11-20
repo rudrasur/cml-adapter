@@ -1,6 +1,7 @@
 const HTMLParser = require('node-html-parser');
 const TurndownService = require('turndown');
 const htmlToMarkdownMapping = require("./html-markdown-mapper");
+const showdown  = require('showdown');
 
 parseHtml = (htmlContent => {
 
@@ -24,7 +25,8 @@ parseHtml = (htmlContent => {
     console.log('***********************RESULT: END************************');
 
     console.log("Its invoked.");
-    return [200, 'It is working'];
+    const sampleResponse = getResponse();
+    return [200, sampleResponse];
 });
 
 parseNode = (node, counter, markdownLines) => {
@@ -34,6 +36,20 @@ parseNode = (node, counter, markdownLines) => {
         if (node.nodeType === 1) {
             console.log(node.tagName)
             tagName = node.tagName.toLowerCase();
+            if (htmlToMarkdownMapping.hasOwnProperty(tagName)) {
+                const markdownTemplate = htmlToMarkdownMapping[tagName];
+                let space = "";
+                for (let i=0; i<counter; i++) {
+                    space = space + " ";
+                }
+                if (tagName === 'a') {
+                    markdownLines.push(space  + parseLink(markdownTemplate, node));
+                } else if (tagName === 'option') {
+                    markdownLines.push(space  + parseOption(markdownTemplate, node));
+                } else {
+                    markdownLines.push(space  + markdownTemplate + node.text);
+                }
+            }
         } else {
             console.log(node.text)
         }
@@ -43,31 +59,31 @@ parseNode = (node, counter, markdownLines) => {
                 parseNode(element, counter, markdownLines, tagName);
             });
         }
-        if (tagName !== '' && htmlToMarkdownMapping.hasOwnProperty(tagName)) {
-            const markdownTemplate = htmlToMarkdownMapping[tagName];
-            let space = "";
-            for (let i=0; i<counter; i++) {
-                space = space + " ";
-            }
-            if (tagName === 'a') {
-
-                markdownLines.push(space  + parseLink(markdownTemplate, node));
-            } else {
-                markdownLines.push(space  + markdownTemplate + node.text);
-            }
-        }
+        
     }
 
     parseOption = (template, node) => {
         let markdownText = '';
-        
+        markdownText = htmlToMarkdownMapping['option'];
+        markdownText = markdownText.replace('<text>', node.text);
+        let selected = node.attributes.selected === 'selected' ? 'x' : '';
+        markdownText = markdownText.replace('<selected>', selected);
         return markdownText;
     }
 
     parseLink = (template, node) => {
         let markdownText = '';
+        markdownText = htmlToMarkdownMapping['a'];
+        markdownText = markdownText.replace('<value>', node.text);
+        markdownText = markdownText.replace('<href>', node.attributes.href);
         return markdownText;
     }
+}
+
+getResponse = ()=> {
+    const markdownContent = "# Conversion is successfull! \n More functionality to be implemented.";
+    const converter = new showdown.Converter();
+    return converter.makeHtml(markdownContent);
 }
 
 module.exports = { parseHtml }
